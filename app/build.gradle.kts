@@ -4,18 +4,14 @@ plugins {
 
 android {
     namespace = "es.chiteroman.playintegrityfix"
-    compileSdk = 34
-    ndkVersion = "26.3.11579264"
-    buildToolsVersion = "34.0.0"
-
-    buildFeatures {
-        prefab = true
-    }
+    compileSdk = 35
+    ndkVersion = "27.0.11902837"
+    buildToolsVersion = "35.0.0"
 
     defaultConfig {
         applicationId = "es.chiteroman.playintegrityfix"
         minSdk = 26
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 16500
         versionName = "v16.6"
         multiDexEnabled = false
@@ -31,18 +27,8 @@ android {
         }
 
         externalNativeBuild {
-            cmake {
-                arguments += "-DANDROID_STL=none"
-                arguments += "-DCMAKE_BUILD_TYPE=MinSizeRel"
-
-                cFlags += "-w"
-                cppFlags += "-w"
-
-                cppFlags += "-std=c++20"
-                cppFlags += "-fno-exceptions"
-                cppFlags += "-fno-rtti"
-                cppFlags += "-fvisibility=hidden"
-                cppFlags += "-fvisibility-inlines-hidden"
+            ndk {
+                jobs = Runtime.getRuntime().availableProcessors()
             }
         }
     }
@@ -64,15 +50,10 @@ android {
     }
 
     externalNativeBuild {
-        cmake {
-            path = file("src/main/cpp/CMakeLists.txt")
-            version = "3.22.1"
+        ndkBuild {
+            path = file("src/main/cpp/Android.mk")
         }
     }
-}
-
-dependencies {
-    implementation("dev.rikka.ndk.thirdparty:cxx:1.2.0")
 }
 
 tasks.register("updateModuleProp") {
